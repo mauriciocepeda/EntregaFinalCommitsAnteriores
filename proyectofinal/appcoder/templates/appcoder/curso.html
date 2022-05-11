@@ -1,0 +1,26 @@
+{% extends 'appcoder/padre.html' %}
+
+{% load static %}
+
+{% block titulo %}
+
+<h1 class="mb-5">CARGAR CURSOS</h1>
+
+{% endblock %}
+
+{% block formulario %}
+
+<form action="{% url 'cursos' %}" method="POST"> {% csrf_token %}
+
+    <table>
+
+        {{ miformulario.as_table }}
+    
+    </table>
+
+    <input type="submit" value="ENVIAR">
+
+</form>
+
+<a class="btn btn-primary" href="{% url 'busqueda' %}"> BUSCAR CURSOS</a>
+{% endblock%}
