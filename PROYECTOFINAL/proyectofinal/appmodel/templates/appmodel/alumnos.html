@@ -1,0 +1,31 @@
+{% extends 'appmodel/padre.html' %}
+
+{% load static %}
+
+{% block titulo %}
+
+<h1 class="mb-5">ALUMNOS</h1>
+
+{% endblock %}
+
+{% block lista %}
+
+    <div class="card-body">
+    </div>
+
+
+{% for alumno in object_list %}
+
+    <h2 class="card-title h4">{{ alumno }} </h2>
+    <a class="btn btn-primary" href="{% url 'alumnodetalle' alumno.id %}">Detalles</a>
+    <a class="btn btn-primary" href="{% url 'alumnodetalle' alumno.id %}">Editar</a>
+    <a class="btn btn-primary" href="{% url 'alumnodetalle' alumno.id %}">Eliminar</a>
+
+{% endfor %}
+
+<div class="text-center my-5">
+    <div class="card mb-4">
+        <a class="btn btn-danger"href="{% url 'alumnocrear' %}">Crear Nuevo Alumno</a>
+    </div>
+</div>
+{% endblock %}
