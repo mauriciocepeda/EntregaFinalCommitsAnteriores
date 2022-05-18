@@ -4,7 +4,7 @@
 
 {% block titulo %}
 
-<h1 class="mb-5">Eliminar Estudiente</h1>
+<h1 class="mb-5">Eliminar Reseña</h1>
 
 {% endblock %}
 
@@ -12,8 +12,10 @@
 
 <form method="post">{% csrf_token %}
 
-    estas seguro que desea eliminar al estudiante {{ object }}?
+    estas seguro que desea eliminar {{ object }}?
     <input type="submit" value="Eliminar">
+    <a href="{% url 'reseñas' %}"> Regresar</a>
+
 
 </form>
 
