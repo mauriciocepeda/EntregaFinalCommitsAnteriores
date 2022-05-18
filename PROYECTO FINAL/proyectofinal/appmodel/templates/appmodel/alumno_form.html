@@ -1,0 +1,22 @@
+{% extends 'appmodel/padre.html' %}
+
+{% load static %}
+
+{% block titulo %}
+
+<h1 class="mb-5">Crear/Editar alumno</h1>
+
+{% endblock %}
+
+{% block lista %}
+
+<form method="post">{% csrf_token %}
+
+    {{ form.as_p }}
+
+    <input type="submit" value="Enviar"/>
+
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'appmodel/padre.html' %}
+
+{% load static %}
+
+{% block titulo %}
+
+<h1 class="mb-5">Eliminar Estudiente</h1>
+
+{% endblock %}
+
+{% block lista %}
+
+<form method="post">{% csrf_token %}
+
+    estas seguro que desea eliminar al estudiante {{ object }}?
+    <input type="submit" value="Eliminar">
+
+</form>
+
+{% endblock %}
