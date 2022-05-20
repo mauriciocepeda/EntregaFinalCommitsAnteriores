@@ -1,0 +1,22 @@
+{% extends 'appmodel/padre.html' %}
+
+{% load static %}
+
+{% block titulo %}
+
+<h1 class="mb-5">Iniciar sesion</h1>
+
+{% endblock %}
+
+{% block lista %} 
+
+<form method="POST"> {% csrf_token %}
+
+    {{form.as_p}}
+
+    <button type="submmit">Iniciar sesion</button>
+
+
+</form>
+
+{% endblock %}
