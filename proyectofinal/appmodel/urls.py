@@ -2,7 +2,7 @@ from django import views
 from proyectofinal.urls import path
 from appmodel.views import inicio, ReseñaLista, ReseñaDetalle, ReseñaCrear, ReseñaEditar, ReseñaBorrar
 from appmodel.views import login_request, register
-
+from django.contrib.auth.views import LogoutView
 urlpatterns = [
     path('inicio', inicio, name='inicio'),
 
@@ -17,5 +17,6 @@ urlpatterns = [
 
     path('login_request', login_request , name ='login'),
     path('register', register , name ='register'),
+    path('logout', LogoutView.as_view(template_name='appmodel/logout.html') , name ='logout'),
     
 ]

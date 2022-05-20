@@ -1,11 +1,11 @@
-
-from tkinter import E
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render
 from django.http import HttpResponse, request
 from .models import Reseña
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin       
+from appmodel.forms import UserRegisterForm                     
 from django.contrib.auth import login, authenticate, logout
 
 
@@ -16,26 +16,26 @@ def inicio(request):
 #----------------------------------------------------------------------
 
 
-class ReseñaLista(ListView):
+class ReseñaLista(LoginRequiredMixin,ListView):
     model=Reseña
     template_name= 'appmodel/reseñas.html'
 
 
-class ReseñaDetalle(DetailView):
+class ReseñaDetalle(LoginRequiredMixin, DetailView):
     model=Reseña
     template_name= 'appmodel/reseña_detalle.html'
 
-class ReseñaCrear(CreateView):
+class ReseñaCrear(LoginRequiredMixin,CreateView):
     model=Reseña
     success_url=reverse_lazy('reseñas')
     fields=['titulo','fecha','cuerpo', 'valoracion']
 
-class ReseñaEditar(UpdateView):
+class ReseñaEditar(LoginRequiredMixin,UpdateView):
     model=Reseña
     success_url=reverse_lazy('reseñas')
     fields=['titulo','fecha','cuerpo','valoracion']
 
-class ReseñaBorrar(DeleteView):
+class ReseñaBorrar(LoginRequiredMixin,DeleteView):
     model=Reseña
     success_url=reverse_lazy('reseñas')
     fields=['titulo','fecha','cuerpo','valoracion']
@@ -66,17 +66,17 @@ def login_request(request):
 
 def register(request):
     if request.method=="POST":
-        form=UserCreationForm(data=request.POST)
+        form=UserRegisterForm(data=request.POST)
         if form.is_valid():
             user=form.cleaned_data.get('username')
             form.save()
             return render(request, 'appmodel/inicio.html', {"mensaje": "usuario creado"})
         else:
-            return render(request, 'appmodel/login.html',{"mensaje":"algo falle, el usuario no pudo crearse"})
+            return render(request, 'appmodel/inicio.html',{"mensaje":"algo falle, el usuario no pudo crearse"})
 
     else:
-        form=UserCreationForm()
-        return render(request, 'appmodel/login.html',{"form":form})
+        form=UserRegisterForm()
+        return render(request, 'appmodel/registro.html',{"form":form})
 
 
 
