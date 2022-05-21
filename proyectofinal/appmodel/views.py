@@ -6,7 +6,7 @@ from .models import Reseña
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin     
 from django.contrib.auth.decorators import login_required  
-from appmodel.forms import UserRegisterForm                     
+from appmodel.forms import UserRegisterForm              
 from django.contrib.auth import login, authenticate, logout
 
 @login_required

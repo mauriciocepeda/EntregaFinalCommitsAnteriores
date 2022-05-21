@@ -13,9 +13,9 @@
 <form method="post">{% csrf_token %}
 
     estas seguro que desea eliminar {{ object }}?
-    <input type="submit" value="Eliminar">
+    <input class="btn btn-danger"type="submit" value="Eliminar">
     
-    <a href="{% url 'reseñas' %}"> Regresar</a>
+    <a class="btn btn-primary"href="{% url 'reseñas' %}"> Regresar</a>
 
 
 </form>
