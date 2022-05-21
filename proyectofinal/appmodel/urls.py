@@ -1,10 +1,9 @@
-from django import views
 from proyectofinal.urls import path
 from appmodel.views import inicio, ReseñaLista, ReseñaDetalle, ReseñaCrear, ReseñaEditar, ReseñaBorrar
 from appmodel.views import login_request, register
 from django.contrib.auth.views import LogoutView
 urlpatterns = [
-    path('inicio', inicio, name='inicio'),
+    path('', inicio, name='inicio'),
 
 #---------------reseñas crud --------------------------
     path('reseñas', ReseñaLista.as_view(), name='reseñas'),

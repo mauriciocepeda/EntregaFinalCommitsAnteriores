@@ -4,11 +4,12 @@ from django.shortcuts import render
 from django.http import HttpResponse, request
 from .models import Reseña
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin       
+from django.contrib.auth.mixins import LoginRequiredMixin     
+from django.contrib.auth.decorators import login_required  
 from appmodel.forms import UserRegisterForm                     
 from django.contrib.auth import login, authenticate, logout
 
-
+@login_required
 def inicio(request):
     return render (request, 'appmodel/inicio.html')
 
@@ -55,11 +56,11 @@ def login_request(request):
             if user is not None:
                 login(request, user)
 
-                return render(request, 'appmodel/reseñas.html')
+                return render(request, 'appmodel/inicio.html',{"mensaje":f"Bienvenido! {nombre}"})
             else:
-                return render(request, 'appmodel/inicio.html')
+                return render(request, 'appmodel/login.html', {"mensaje":"Usuario o contraseña invalida, intentelo nuevamente...", "form_vacio":form})
         else:
-            return render(request, 'appmodel/inicio.html')
+            return render(request, 'appmodel/login.html', {"mensaje":"usuario o contraseña invalida, intentelo nuevamente...", "form_vacio":form})
     else:
         form=AuthenticationForm()
         return render(request, 'appmodel/login.html', {"form":form} )
@@ -68,11 +69,11 @@ def register(request):
     if request.method=="POST":
         form=UserRegisterForm(data=request.POST)
         if form.is_valid():
-            user=form.cleaned_data.get('username')
+            nombre=form.cleaned_data.get('username')
             form.save()
-            return render(request, 'appmodel/inicio.html', {"mensaje": "usuario creado"})
+            return render(request, 'appmodel/inicio.html', {"mensaje":f"usuario creado exitosamente, bienvenido! {nombre}"})
         else:
-            return render(request, 'appmodel/inicio.html',{"mensaje":"algo falle, el usuario no pudo crearse"})
+            return render(request, 'appmodel/registro.html',{"mensaje":"algo fallo, el usuario no pudo crearse"})
 
     else:
         form=UserRegisterForm()

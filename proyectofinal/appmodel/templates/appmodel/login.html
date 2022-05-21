@@ -5,7 +5,7 @@
 {% block titulo %}
 
 <h1 class="mb-5">Iniciar sesion</h1>
-
+{{ mensaje }}
 {% endblock %}
 
 {% block lista %} 
@@ -13,10 +13,15 @@
 <form method="POST"> {% csrf_token %}
 
     {{form.as_p}}
+    {{ form_vacio }}
+
 
     <button type="submmit">Iniciar sesion</button>
 
 
 </form>
 
+<a href="{% url 'register' %}">No estas registrado aun??</a>
+
 {% endblock %}
+
