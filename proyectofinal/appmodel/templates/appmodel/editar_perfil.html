@@ -4,22 +4,25 @@
 
 {% block titulo %}
 
-<h1 class="mb-5">{{mensaje}}</h1>
+<h1 class="mb-5">{{ mensaje }}</h1>
 {% endblock %}
 
 {% block navegador %}
-<li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'reseñas' %}">Reseñas</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Cerrar Sesion</a></li>
+<li class="nav-item" ><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
 
 {% endblock %}
 
 {% block lista %}
-<div class="text-center my-5">
-    <div class="card mb-4">
-        <a class="btn btn-danger" href="{% url 'reseñas' %}">Hecha un vistazo a las reseñas!</a>
-    </div>
-</div>
+<form action="{% url 'editar_perfil' %}" method="POST">{% csrf_token %}
+    <table>
+        {{form.as_p}}
+    </table>
+    <input type="submit", value="Guardar cambios">
+</form>
 
+
+<a href="{% url 'perfil' %}">Regresar</a>
 {% endblock %}

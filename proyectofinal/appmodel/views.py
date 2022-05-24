@@ -6,12 +6,17 @@ from .models import Reseña
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin     
 from django.contrib.auth.decorators import login_required  
-from appmodel.forms import UserRegisterForm              
+from appmodel.forms import UserRegisterForm, UserEditform          
 from django.contrib.auth import login, authenticate, logout
 
 @login_required
 def inicio(request):
     return render (request, 'appmodel/inicio.html')
+
+def perfil(request):
+    return render(request, 'appmodel/perfil.html')
+
+
 
 
 #----------------------------------------------------------------------
@@ -79,5 +84,18 @@ def register(request):
         form=UserRegisterForm()
         return render(request, 'appmodel/registro.html',{"form":form})
 
+@login_required
+def editar_perfil(request):
+    usuario=request.user
 
-
+    if request.method=="POST":
+        form=UserRegisterForm(request.POST, instance=usuario)
+        if form.is_valid():
+            informacion=form.cleaned_data
+            usuario.email=informacion['email']
+            usuario.set_password(informacion['password1'])
+            usuario.save()
+            return render(request,'appmodel/perfil.html', {"mensajeeditar":"su perfil a sido actualizado exitosamente"})
+    else:
+        form=UserRegisterForm(instance=usuario)
+    return render (request,'appmodel/editar_perfil.html', {'form':form,'mensaje':'Edita tu perfil'})

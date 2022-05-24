@@ -3,8 +3,8 @@
 {% load static %}
 
 {% block titulo %}
-
-<h1 class="mb-5">{{mensaje}}</h1>
+<h1 class="mb-5">PERFIL</h1>
+<h1 class="mb-5">{{ mensajeeditar }}</h1>
 {% endblock %}
 
 {% block navegador %}
@@ -16,10 +16,5 @@
 {% endblock %}
 
 {% block lista %}
-<div class="text-center my-5">
-    <div class="card mb-4">
-        <a class="btn btn-danger" href="{% url 'reseñas' %}">Hecha un vistazo a las reseñas!</a>
-    </div>
-</div>
-
+<a href="{% url 'editar_perfil' %}">Edita tu perfil</a>
 {% endblock %}
