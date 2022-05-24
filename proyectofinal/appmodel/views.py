@@ -1,20 +1,27 @@
+from multiprocessing import context
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render
 from django.http import HttpResponse, request
-from .models import Reseña
+from .models import Reseña, Avatar
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin     
 from django.contrib.auth.decorators import login_required  
-from appmodel.forms import UserRegisterForm, UserEditform          
+from appmodel.forms import UserRegisterForm, UserEditform       
 from django.contrib.auth import login, authenticate, logout
 
 @login_required
 def inicio(request):
-    return render (request, 'appmodel/inicio.html')
+    avatar=Avatar.objects.filter(user=request.user.id)
+
+    return render (request, 'appmodel/inicio.html',{'url':avatar[0].imagen.url})
 
 def perfil(request):
-    return render(request, 'appmodel/perfil.html')
+    avatar=Avatar.objects.filter(user=request.user.id)
+
+    return render(request, 'appmodel/perfil.html',{'url':avatar[0].imagen.url})
+
+
 
 
 
@@ -25,7 +32,6 @@ def perfil(request):
 class ReseñaLista(LoginRequiredMixin,ListView):
     model=Reseña
     template_name= 'appmodel/reseñas.html'
-
 
 class ReseñaDetalle(LoginRequiredMixin, DetailView):
     model=Reseña
@@ -57,7 +63,6 @@ def login_request(request):
             nombre=form.cleaned_data.get('username')
             contraseña=form.cleaned_data.get('password')
             user=authenticate(username=nombre, password=contraseña)
-
             if user is not None:
                 login(request, user)
 

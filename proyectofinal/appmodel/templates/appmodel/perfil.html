@@ -8,13 +8,14 @@
 {% endblock %}
 
 {% block navegador %}
-<li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'reseñas' %}">Reseñas</a></li>
-<li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Cerrar Sesion</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
 
 {% endblock %}
 
 {% block lista %}
-<a href="{% url 'editar_perfil' %}">Edita tu perfil</a>
+<a class="nav-link" href="{% url 'editar_perfil' %}">Edita tu perfil</a>
+<a class="nav-link" href="{% url 'logout' %}">Cerrar Sesion</a>
+
 {% endblock %}
