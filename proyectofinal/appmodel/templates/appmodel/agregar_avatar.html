@@ -1,0 +1,26 @@
+{% extends 'appmodel/padre.html' %}
+
+{% load static %}
+
+{% block titulo %}
+
+<h1 class="mb-5">Agregar Avatar</h1>
+<h2 class="mb-5"> {{ mensaje }}</h2>
+{% endblock %}
+
+{% block lista %} 
+{{ agregar_avatar }}
+<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+    {{ avatar_form.as_p}}
+    {{ form.as_p }}
+
+    <input type="submit" value="Agregar">
+
+</form>
+
+
+<br>
+
+
+{% endblock %}
+

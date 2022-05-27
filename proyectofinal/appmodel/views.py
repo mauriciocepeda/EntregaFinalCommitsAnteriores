@@ -3,23 +3,26 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render
 from django.http import HttpResponse, request
+from numpy import empty
 from .models import Reseña, Avatar
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin     
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required  
-from appmodel.forms import UserRegisterForm, UserEditform       
+from appmodel.forms import UserRegisterForm, UserEditform , AvatarForm  
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.models import User
+
 
 @login_required
 def inicio(request):
-    avatar=Avatar.objects.filter(user=request.user.id)
-
-    return render (request, 'appmodel/inicio.html',{'url':avatar[0].imagen.url})
+    return render (request, 'appmodel/inicio.html')
 
 def perfil(request):
-    avatar=Avatar.objects.filter(user=request.user.id)
-
-    return render(request, 'appmodel/perfil.html',{'url':avatar[0].imagen.url})
+    avatares=Avatar.objects.filter(user=request.user)
+    if avatares:
+        return render(request, 'appmodel/perfil.html', {'url':avatares[0].imagen.url})
+    else:
+        return render(request, 'appmodel/perfil.html')
 
 
 
@@ -40,20 +43,45 @@ class ReseñaDetalle(LoginRequiredMixin, DetailView):
 class ReseñaCrear(LoginRequiredMixin,CreateView):
     model=Reseña
     success_url=reverse_lazy('reseñas')
-    fields=['titulo','fecha','cuerpo', 'valoracion']
+    fields=['fecha','titulo','cuerpo']
 
 class ReseñaEditar(LoginRequiredMixin,UpdateView):
     model=Reseña
     success_url=reverse_lazy('reseñas')
-    fields=['titulo','fecha','cuerpo','valoracion']
+    fields=['fecha','titulo','cuerpo']
 
 class ReseñaBorrar(LoginRequiredMixin,DeleteView):
     model=Reseña
     success_url=reverse_lazy('reseñas')
-    fields=['titulo','fecha','cuerpo','valoracion']
+    fields=['fecha','titulo','cuerpo']
 
 
 #---------------------Login, Logout, Registrate---------
+
+def register(request):
+    if request.method=="POST":
+        form=UserRegisterForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'appmodel/inicio.html',{"mensaje":'Usuario creado'})
+        else:
+            form=UserRegisterForm()
+            return render(request, 'appmodel/registro.html',{"mensaje":"algo fallo, el usuario no pudo crearse",'form':form})
+    else:
+        form=UserRegisterForm()
+        return render(request, 'appmodel/registro.html',{"form":form})
+
+def agregar_avatar(request):
+    if request.method=='POST':
+        avatarform=AvatarForm(request.POST, request.FILES)
+        if avatarform.is_valid():
+            u=User.objects.get(username=request.user)
+            avatar=Avatar(user=u,imagen=avatarform.cleaned_data['imagen'])
+            avatar.save()
+            return render(request, 'appmodel/inicio.html',{"mensaje":f"avatar agregado exitosamente, bienvenido!"})
+    else:
+        avatarform=AvatarForm()
+        return render (request,'appmodel/agregar_avatar.html',{'form':avatarform})
 
 def login_request(request):
     if request.method=="POST":
@@ -75,20 +103,6 @@ def login_request(request):
         form=AuthenticationForm()
         return render(request, 'appmodel/login.html', {"form":form} )
 
-def register(request):
-    if request.method=="POST":
-        form=UserRegisterForm(data=request.POST)
-        if form.is_valid():
-            nombre=form.cleaned_data.get('username')
-            form.save()
-            return render(request, 'appmodel/inicio.html', {"mensaje":f"usuario creado exitosamente, bienvenido! {nombre}"})
-        else:
-            return render(request, 'appmodel/registro.html',{"mensaje":"algo fallo, el usuario no pudo crearse"})
-
-    else:
-        form=UserRegisterForm()
-        return render(request, 'appmodel/registro.html',{"form":form})
-
 @login_required
 def editar_perfil(request):
     usuario=request.user
@@ -104,3 +118,5 @@ def editar_perfil(request):
     else:
         form=UserRegisterForm(instance=usuario)
     return render (request,'appmodel/editar_perfil.html', {'form':form,'mensaje':'Edita tu perfil'})
+
+

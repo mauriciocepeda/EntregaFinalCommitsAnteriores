@@ -3,22 +3,33 @@
 {% load static %}
 
 {% block titulo %}
-
-<h1 class="mb-5">{{mensaje}}</h1>
+{% if user.is_authenticated %}
+<h1 class="mb-5">INICIO</h1>
+{% else %}
+<h2 class="mb-5">{{mensaje}}</h1>
+{% endif %}
 {% endblock %}
 
 {% block navegador %}
-
+{% if user.is_authenticated %}
 <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'reseñas' %}">Reseñas</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
+{% endif %}
 {% endblock %}
 
 {% block lista %}
+{% if user.is_authenticated%}
 <div class="text-center my-5">
     <div class="card mb-4">
-        <a class="btn btn-danger" href="{% url 'reseñas' %}">Hecha un vistazo a las reseñas!</a>
+        <a class="btn btn-primary" href="{% url 'reseñas' %}">reseñas</a>
     </div>
 </div>
-
+{% else %}
+<div class="text-center my-5">
+    <div class="card mb-4">
+        <a class="btn btn-primary" href="{% url 'login' %}">inicia sesion</a>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

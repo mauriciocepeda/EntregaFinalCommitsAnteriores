@@ -13,7 +13,8 @@
 <form method="POST"> {% csrf_token %}
 
     {{form.as_p}}
-    {{ form_vacio }}
+    
+
 
 
     <button class="btn btn-primary" type="submmit">Iniciar sesion</button>
@@ -21,6 +22,7 @@
 
 </form>
 <br>
+
 <a class="btn btn-primary" href="{% url 'register' %}">No estas registrado aun??</a>
 
 {% endblock %}

@@ -18,16 +18,21 @@
 
     <h2 class="card-title h4">{{ object }} </h2>
     <a class="btn btn-primary" href="{% url 'reseñadetalle' object.id %}">Leer</a>
+    {% if user.is_superuser %}
     <a class="btn btn-primary" href="{% url 'reseñaeditar' object.id %}">Editar</a>
     <a class="btn btn-primary" href="{% url 'reseñaborrar' object.id %}">Eliminar</a>
+    {% endif %}
 
 {% endfor %}
+
+{% if user.is_superuser %}
 
 <div class="text-center my-5">
     <div class="card mb-4">
         <a class="btn btn-danger"href="{% url 'reseñacrear' %}">Escribir una nueva reseña</a>
     </div>
 </div>
+{% endif %}
 {% endblock %}
 
 {% block navegador %}
