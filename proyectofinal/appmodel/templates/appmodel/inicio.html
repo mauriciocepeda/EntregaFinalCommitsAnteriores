@@ -5,6 +5,7 @@
 {% block titulo %}
 {% if user.is_authenticated %}
 <h1 class="mb-5">INICIO</h1>
+<h1 class="mb-5">{{ mensaje }}</h1>
 {% else %}
 <h2 class="mb-5">{{mensaje}}</h1>
 {% endif %}

@@ -13,8 +13,7 @@
     <div class="card-body">
     </div>
 
-
-{% for object in object_list %}
+{% for object in object_list reversed %}
 
     <h2 class="card-title h4">{{ object }} </h2>
     <a class="btn btn-primary" href="{% url 'reseñadetalle' object.id %}">Leer</a>

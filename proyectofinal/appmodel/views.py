@@ -15,8 +15,9 @@ from django.contrib.auth.models import User
 
 @login_required
 def inicio(request):
-    return render (request, 'appmodel/inicio.html')
+    return render(request, 'appmodel/inicio.html')
 
+@login_required
 def perfil(request):
     avatares=Avatar.objects.filter(user=request.user)
     if avatares:
@@ -43,17 +44,17 @@ class ReseñaDetalle(LoginRequiredMixin, DetailView):
 class ReseñaCrear(LoginRequiredMixin,CreateView):
     model=Reseña
     success_url=reverse_lazy('reseñas')
-    fields=['fecha','titulo','cuerpo']
+    fields=['fecha','titulo','cuerpo','tapa']
 
 class ReseñaEditar(LoginRequiredMixin,UpdateView):
     model=Reseña
     success_url=reverse_lazy('reseñas')
-    fields=['fecha','titulo','cuerpo']
+    fields=['fecha','titulo','cuerpo','tapa']
 
 class ReseñaBorrar(LoginRequiredMixin,DeleteView):
     model=Reseña
     success_url=reverse_lazy('reseñas')
-    fields=['fecha','titulo','cuerpo']
+    fields=['fecha','titulo','cuerpo','tapa']
 
 
 #---------------------Login, Logout, Registrate---------
@@ -75,10 +76,13 @@ def agregar_avatar(request):
     if request.method=='POST':
         avatarform=AvatarForm(request.POST, request.FILES)
         if avatarform.is_valid():
+            avatarviejo=Avatar.objects.filter(user=request.user)
+            if avatarviejo:
+                avatarviejo.delete()
             u=User.objects.get(username=request.user)
             avatar=Avatar(user=u,imagen=avatarform.cleaned_data['imagen'])
             avatar.save()
-            return render(request, 'appmodel/inicio.html',{"mensaje":f"avatar agregado exitosamente, bienvenido!"})
+            return render(request, 'appmodel/inicio.html',{"mensaje":f"avatar agregado exitosamente"})
     else:
         avatarform=AvatarForm()
         return render (request,'appmodel/agregar_avatar.html',{'form':avatarform})
@@ -108,15 +112,15 @@ def editar_perfil(request):
     usuario=request.user
 
     if request.method=="POST":
-        form=UserRegisterForm(request.POST, instance=usuario)
+        form=UserEditform(request.POST, instance=usuario)
         if form.is_valid():
             informacion=form.cleaned_data
             usuario.email=informacion['email']
             usuario.set_password(informacion['password1'])
             usuario.save()
-            return render(request,'appmodel/perfil.html', {"mensajeeditar":"su perfil a sido actualizado exitosamente"})
+            return render(request,'appmodel/inicio.html', {"mensaje":"su perfil a sido actualizado exitosamente"})
     else:
-        form=UserRegisterForm(instance=usuario)
+        form=UserEditform(instance=usuario)
     return render (request,'appmodel/editar_perfil.html', {'form':form,'mensaje':'Edita tu perfil'})
 
 

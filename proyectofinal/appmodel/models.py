@@ -1,12 +1,13 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Reseña(models.Model):
-    fecha=models.DateField(max_length=255)
+    fecha=models.DateField(default=timezone.now)
     titulo=models.CharField(max_length=255)
-    cuerpo=RichTextField(max_length=255,null=True,blank=True)
-
+    cuerpo=RichTextField(max_length=3000)
+    tapa=models.ImageField(blank=True, upload_to='tapas')
     def __str__(self):
         return f"Reseña: {self.titulo}"
 

@@ -10,12 +10,13 @@
 
 {% block lista %}
 
-<p>Nombre: <i>{{reseña.titulo}}</i></p>
-<p>Fecha de lanzamiento: <i>{{reseña.fecha}}</i></p>
+<h3><i>{{reseña.fecha}}</i></h3>
+
+<h1><i>{{reseña.titulo}}</i></h1>
+
+<img src='{{ reseña.tapa.url }}' height="500px">
+
 <p><i>{{reseña.cuerpo}}</i></p>
-<p>Puntuacion: <i>{{reseña.valoracion}}</i></p>
-
-
 <p>
     <a class="btn btn-danger" href="{% url 'reseñas' %}"> Regresar</a>
 </p>
