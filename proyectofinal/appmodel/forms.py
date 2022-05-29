@@ -1,8 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
+from django.utils import timezone
+from django.views.generic import CreateView
 
-
+from appmodel.models import Reseña
 
 
 class UserRegisterForm(UserCreationForm):
@@ -36,3 +39,14 @@ class UserEditform(UserCreationForm):
 
 class AvatarForm(forms.Form):
     imagen=forms.ImageField(label='ingrese un avatar')
+
+
+class ReseñaFormulario(CreateView):
+    fecha=forms.DateTimeField(initial=timezone.now)
+    titulo=forms.CharField(max_length=255)
+    cuerpo=forms.CharField(max_length=3000)
+    tapa=forms.ImageField()
+    class Meta:
+        model=Reseña
+        fields=['fecha','titulo','cuerpo','tapa']
+        help_texts={k:"" for k in fields}

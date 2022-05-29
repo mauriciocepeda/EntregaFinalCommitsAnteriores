@@ -8,7 +8,7 @@ from .models import Reseña, Avatar
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required  
-from appmodel.forms import UserRegisterForm, UserEditform , AvatarForm  
+from appmodel.forms import UserRegisterForm, UserEditform , AvatarForm, ReseñaFormulario 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 
@@ -90,7 +90,6 @@ def agregar_avatar(request):
 def login_request(request):
     if request.method=="POST":
         form=AuthenticationForm(request, data=request.POST)
-
         if form.is_valid():
             nombre=form.cleaned_data.get('username')
             contraseña=form.cleaned_data.get('password')
@@ -123,4 +122,16 @@ def editar_perfil(request):
         form=UserEditform(instance=usuario)
     return render (request,'appmodel/editar_perfil.html', {'form':form,'mensaje':'Edita tu perfil'})
 
-
+#---------------------------cargar y editar reseñas----------------
+"""""
+def CargarReseña(request):
+    if request.method=='POST':
+        form=ReseñaFormulario(request.POST)
+        if form.is_valid():
+            informacion=form.cleaned_data
+            reseña=Reseña(fecha=informacion['fecha'], titulo=informacion['titulo'],cuerpo=informacion['cuerpo'],tapa=informacion['tapa'])
+            reseña.save()
+        return render(request, 'appmodel/reseñas.html')
+    else:
+        form=ReseñaFormulario()
+        return render(request, 'appmodel/reseña_form.html', {'form':form})"""

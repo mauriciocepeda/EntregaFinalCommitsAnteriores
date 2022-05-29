@@ -10,7 +10,7 @@
 
 {% block lista %}
 
-<form method="post">{% csrf_token %}
+<form method="POST" enctype="multipart/form-data">{% csrf_token %}
 
     {{ form.as_p }}
 
