@@ -14,9 +14,8 @@
     </div>
 
 {% for object in object_list reversed %}
-
-    <h2 class="card-title h4">{{ object }} </h2>
-    <a class="btn btn-primary" href="{% url 'reseñadetalle' object.id %}">Leer</a>
+    <h1><img src="{{ object.tapa.url }}" height="150px"></h1>
+    <a class="btn btn-primary" href="{% url 'reseñadetalle' object.id %}">Leer {{ object }}</a>
     {% if user.is_superuser %}
     <a class="btn btn-primary" href="{% url 'reseñaeditar' object.id %}">Editar</a>
     <a class="btn btn-primary" href="{% url 'reseñaborrar' object.id %}">Eliminar</a>
