@@ -4,15 +4,18 @@
 
 {% block titulo %}
 
-<h1 class="mb-5">Adiossss</h1>
+<h1 class="mb-5">Reseñas.com</h1>
 
 {% endblock %}
 
 {% block lista %} 
 
-<h1>Te me fuistes perro...</h1>
-
-<a class="btn btn-primary" href="{% url 'login' %}">Inicia sesion suevamente</a>
+<h1>Te has deslogueado</h1>
+<div class="text-center my-5">
+    <div class="card mb-4">
+        <a class="btn btn-primary" href="{% url 'login' %}">Inicia sesion suevamente</a>
+    </div>
+</div> 
 
 {% endblock %}
 

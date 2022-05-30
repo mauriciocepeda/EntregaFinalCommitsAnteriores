@@ -122,16 +122,3 @@ def editar_perfil(request):
         form=UserEditform(instance=usuario)
     return render (request,'appmodel/editar_perfil.html', {'form':form,'mensaje':'Edita tu perfil'})
 
-#---------------------------cargar y editar reseñas----------------
-"""""
-def CargarReseña(request):
-    if request.method=='POST':
-        form=ReseñaFormulario(request.POST)
-        if form.is_valid():
-            informacion=form.cleaned_data
-            reseña=Reseña(fecha=informacion['fecha'], titulo=informacion['titulo'],cuerpo=informacion['cuerpo'],tapa=informacion['tapa'])
-            reseña.save()
-        return render(request, 'appmodel/reseñas.html')
-    else:
-        form=ReseñaFormulario()
-        return render(request, 'appmodel/reseña_form.html', {'form':form})"""
