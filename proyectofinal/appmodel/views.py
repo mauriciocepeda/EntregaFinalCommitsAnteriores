@@ -2,8 +2,8 @@ from multiprocessing import context
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, request, JsonResponse
-from numpy import empty
+from django.http import HttpResponse, request
+from django.http.response import JsonResponse
 from .models import Reseña, Avatar, Mensaje
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +13,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from rest_framework.parsers import JSONParser
 from .serializer import MensajeSerializer
+from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required
@@ -125,24 +126,24 @@ def editar_perfil(request):
     return render (request,'appmodel/editar_perfil.html', {'form':form,'mensaje':'Edita tu perfil'})
 
 #------------------------Mensajes----------------------------------------------------------------
-
-def message_list(request, emisor=None, receptor=None):
+@csrf_exempt
+def message_list(request, sender=None, receiver=None):
 
     if request.method == 'GET':
-        mensajes = Mensaje.objects.filter(emisor_id=emisor, receptor_id=receptor, leido=False)
-        serializer = MensajeSerializer(mensajes, many=True, context={'request': request})
-        for mensaje in mensajes:
-            mensaje.is_read = True
-            mensaje.save()
+        messages = Mensaje.objects.filter(sender_id=sender, receiver_id=receiver, is_read=False)
+        serializer = MensajeSerializer(messages, many=True, context={'request': request})
+        for message in messages:
+            message.is_read = True
+            message.save()
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
         serializer = MensajeSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
             return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+        else:
+            return JsonResponse(serializer.errors , status=400)
 
 def chat_view(request):
     if not request.user.is_authenticated:
@@ -152,14 +153,14 @@ def chat_view(request):
                       {'users': User.objects.exclude(username=request.user.username)})
 
 
-def message_view(request, emisor, receptor):
+def message_view(request, sender, receiver):
     if not request.user.is_authenticated:
         return redirect('login')
     if request.method == "GET":
         return render(request, "appmodel/messages.html",
                       {'users': User.objects.exclude(username=request.user.username),
-                       'receiver': User.objects.get(id=receptor),
-                       'messages': Mensaje.objects.filter(emisor_id=emisor, receptor_id=receptor) |
-                                   Mensaje.objects.filter(emisor_id=receptor, receptor_id=emisor)})
+                       'receiver': User.objects.get(id=receiver),
+                       'messages': Mensaje.objects.filter(sender_id=sender, receiver_id=receiver) |
+                                   Mensaje.objects.filter(sender_id=receiver, receiver_id=sender)})
 
 

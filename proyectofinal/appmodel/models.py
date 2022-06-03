@@ -18,14 +18,14 @@ class Avatar(models.Model):
 
 
 class Mensaje(models.Model):
-    emisor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='emisor')
-    receptor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receptor')
-    mensaje = models.CharField(max_length=1200)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+    message = models.CharField(max_length=1200)
     timestamp = models.DateTimeField(auto_now_add=True)
-    leido = models.BooleanField(default=False)
+    is_read = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.mensaje
+        return self.message
 
     class Meta:
         ordering = ('timestamp',)

@@ -14,7 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
 class MensajeSerializer(serializers.ModelSerializer):
     sender = serializers.SlugRelatedField(many=False, slug_field='username', queryset=User.objects.all())
     receiver = serializers.SlugRelatedField(many=False, slug_field='username', queryset=User.objects.all())
-
     class Meta:
         model = Mensaje
         fields = ['sender', 'receiver', 'message', 'timestamp']
