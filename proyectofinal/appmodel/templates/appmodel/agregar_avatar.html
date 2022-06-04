@@ -24,3 +24,9 @@
 
 {% endblock %}
 
+{% block navegador %}
+<li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'reseñas' %}">Reseñas</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'chats' %}">Chat</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
+{% endblock %}

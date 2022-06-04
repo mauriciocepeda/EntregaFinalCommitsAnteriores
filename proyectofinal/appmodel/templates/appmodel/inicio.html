@@ -16,8 +16,8 @@
 {% if user.is_authenticated %}
 <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'reseñas' %}">Reseñas</a></li>
-<li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'chats' %}">Chat</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
 {% endif %}
 {% endblock %}
 
@@ -25,9 +25,11 @@
 {% if user.is_authenticated%}
 <div class="text-center my-5">
     <div class="card mb-4">
-        <a class="btn btn-primary" href="{% url 'reseñas' %}">reseñas</a>
+        <a class="btn btn-primary" href="{% url 'reseñas' %}">Reseñas</a>
         <br>
-        <a class="btn btn-primary" href="{% url 'perfil' %}">mi perfil</a>
+        <a class="btn btn-primary" href="{% url 'chats' %}">Chats</a>
+        <br>
+        <a class="btn btn-primary" href="{% url 'perfil' %}">Mi perfil</a>
 
     </div>
 </div>
