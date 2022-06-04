@@ -1,0 +1,25 @@
+{% extends 'appmodel/padre.html' %}
+
+{% load static %}
+
+{% block titulo %}
+<h1 class="mb-5">Chats</h1>
+<h2 class="mb-5">General</h2>
+{% endblock %}
+
+{% block navegador %}
+<li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'reseñas' %}">Reseñas</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'chats' %}">Chats</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
+
+{% endblock %}
+
+{% block lista %}
+{% for user in users %}
+
+<a class="btn btn-primary" href="{% url 'chat_detalle' request.user.id user.id %}">Chatear con: {{user}}</a>
+<br>
+{% endfor %}
+
+{% endblock %}

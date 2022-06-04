@@ -1,7 +1,7 @@
 from proyectofinal.urls import path
 from appmodel.views import inicio, ReseñaLista, ReseñaDetalle, ReseñaCrear, ReseñaEditar, ReseñaBorrar, perfil
 from appmodel.views import login_request, register, editar_perfil, agregar_avatar
-from appmodel.views import chat_view, message_view, message_list
+from appmodel.views import chats, chat_detalle
 
 from django.contrib.auth.views import LogoutView
 urlpatterns = [
@@ -24,9 +24,8 @@ urlpatterns = [
 
 #-------------------------Mensajes--------------------------------------------------------------
 
-    path('chat/',chat_view, name='chats'),
-    path('chat/<int:sender>/<int:receiver>/', message_view, name='chat'),
-    path('api/messages/<int:sender>/<int:receiver>/', message_list, name='message-detail'),
-    path('api/messages/', message_list, name='message-list'),
+    path('chats/',chats, name='chats'),
+   path('chats/<int:sender>/<int:receiver>/', chat_detalle, name='chat_detalle'),
+
     
 ]

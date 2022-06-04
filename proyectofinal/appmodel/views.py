@@ -1,14 +1,16 @@
-from multiprocessing import context
+
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, request
 from django.http.response import JsonResponse
+
+from appmodel.forms import MensajeFormulario
 from .models import Reseña, Avatar, Mensaje
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required  
-from appmodel.forms import UserRegisterForm, UserEditform , AvatarForm, ReseñaFormulario 
+from appmodel.forms import UserRegisterForm, UserEditform , AvatarForm, ReseñaFormulario , MensajeFormulario
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from rest_framework.parsers import JSONParser
@@ -126,41 +128,39 @@ def editar_perfil(request):
     return render (request,'appmodel/editar_perfil.html', {'form':form,'mensaje':'Edita tu perfil'})
 
 #------------------------Mensajes----------------------------------------------------------------
-@csrf_exempt
-def message_list(request, sender=None, receiver=None):
 
-    if request.method == 'GET':
-        messages = Mensaje.objects.filter(sender_id=sender, receiver_id=receiver, is_read=False)
-        serializer = MensajeSerializer(messages, many=True, context={'request': request})
-        for message in messages:
-            message.is_read = True
-            message.save()
-        return JsonResponse(serializer.data, safe=False)
-
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = MensajeSerializer(data=data)
-        if serializer.is_valid():
-            return JsonResponse(serializer.data, status=201)
-        else:
-            return JsonResponse(serializer.errors , status=400)
-
-def chat_view(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.method == "GET":
-        return render(request, 'appmodel/chat.html',
+def chats(request):
+        return render(request, 'appmodel/chats.html',
                       {'users': User.objects.exclude(username=request.user.username)})
 
+def chat_detalle(request, sender=None, receiver=None):
+    if request.method == 'GET':
+        messages = Mensaje.objects.filter(sender_id=sender, receiver_id=receiver, is_read=False)
+        for message in messages:
+            message.is_read=True
+            message.save()
+        form=MensajeFormulario()
+        return render (request, 'appmodel/chat_detalle.html', {'users': User.objects.exclude(username=request.user.username),
+        'form':form,
+        'sender':sender,
+        'receiver':receiver,
+        'messages': Mensaje.objects.filter(sender_id=sender, receiver_id=receiver) | 
+        Mensaje.objects.filter(sender_id=receiver, receiver_id=sender)})
 
-def message_view(request, sender, receiver):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.method == "GET":
-        return render(request, "appmodel/messages.html",
-                      {'users': User.objects.exclude(username=request.user.username),
-                       'receiver': User.objects.get(id=receiver),
-                       'messages': Mensaje.objects.filter(sender_id=sender, receiver_id=receiver) |
-                                   Mensaje.objects.filter(sender_id=receiver, receiver_id=sender)})
+    else:
+        form_vacio=MensajeFormulario()
+        data=MensajeFormulario(request.POST)
+        if data.is_valid():
+            data_clean=data.cleaned_data.get('message')
+            message=Mensaje(sender_id=sender, receiver_id=receiver, message=data_clean)
+            message.save()
+            return render(request, 'appmodel/chat_detalle.html', {'users': User.objects.exclude(username=request.user.username),
+            'form':form_vacio,
+            'form_lleno':data,
+            'sender':sender,
+            'receiver':receiver,
+            'messages': Mensaje.objects.filter(sender_id=sender, receiver_id=receiver) |
+             Mensaje.objects.filter(sender_id=receiver, receiver_id=sender)})
 
+            
 
