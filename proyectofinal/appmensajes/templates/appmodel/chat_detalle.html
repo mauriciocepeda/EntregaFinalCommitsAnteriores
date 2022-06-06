@@ -1,0 +1,48 @@
+{% extends 'appmensajes/padre.html' %}
+
+{% block titulo %}
+<h1 class="mb-5">Chats</h1>
+
+{% for user in users %}
+{% if user.id == sender or user.id == receiver %}
+<h1 class="mb-5">{{user}}</h1>
+{% endif %}
+{% endfor %}
+
+
+{% endblock %}
+
+
+{% block lista %}
+    {% for message in messages %}
+    {% if message.sender == request.user %}
+<div class="card-panel right" style="width: 75%; position: relative">
+    <div style="position: absolute; top: 0; left:3px; font-weight: bolder" class="title">You: </div>
+    <br>
+    {{ message }}
+</div>
+    {% else %}
+<div class="card-panel left blue lighten-5" style="width: 75%; position: relative">
+    <div style="position: absolute; top: 0; left:3px; font-weight: bolder" class="title">{{ message.sender }}: </div>
+    <br>
+    {{ message }}
+</div>
+    {% endif %}
+    {% endfor %}
+ <form action="" method="POST">{% csrf_token %}
+
+    {{ form.as_p }}
+    {{ formlleno.as_p }}
+
+    <button class="btn btn-primary" type="submit">Enviar</button>
+    <a class="btn btn-danger" href="{% url 'chats' %}">Regresar a chats</a>
+
+</form>
+{% endblock %}
+
+{% block navegador %}
+<li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'reseñas' %}">Reseñas</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'chats' %}">Chat</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
+{% endblock %}

@@ -3,18 +3,15 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, request
-from django.http.response import JsonResponse
 
-from appmodel.forms import MensajeFormulario
-from .models import Reseña, Avatar, Mensaje
+
+from .models import Reseña, Avatar
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required  
-from appmodel.forms import UserRegisterForm, UserEditform , AvatarForm, ReseñaFormulario , MensajeFormulario
+from appmodel.forms import UserRegisterForm, UserEditform , AvatarForm, ReseñaFormulario 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
-from rest_framework.parsers import JSONParser
-from .serializer import MensajeSerializer
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -26,12 +23,13 @@ def inicio(request):
 def perfil(request):
     avatares=Avatar.objects.filter(user=request.user)
     if avatares:
-        return render(request, 'appmodel/perfil.html', {'url':avatares[0].imagen.url})
+        return render(request, 'appmodel/perfil.html', {'url':avatares[0].imagen.url, 'usuario':request.user})
     else:
-        return render(request, 'appmodel/perfil.html')
+        return render(request, 'appmodel/perfil.html',{'usuario':request.user})
 
 
-
+def about_me(request):
+    return render(request, 'appmodel/about_me.html')
 
 
 
@@ -92,6 +90,14 @@ def agregar_avatar(request):
         avatarform=AvatarForm()
         return render (request,'appmodel/agregar_avatar.html',{'form':avatarform})
 
+def borrar_avatar(request):
+    avatar=Avatar.objects.filter(user=request.user)
+    if avatar:
+        avatar.delete()
+        return render(request,'appmodel/inicio.html',{'mensaje':'Avatar borrado'})
+    else:
+        return render(request,'appmodel/inicio.html',{'mensaje':'No hay avatar para borrar'})
+
 def login_request(request):
     if request.method=="POST":
         form=AuthenticationForm(request, data=request.POST)
@@ -120,6 +126,7 @@ def editar_perfil(request):
         if form.is_valid():
             informacion=form.cleaned_data
             usuario.email=informacion['email']
+            usuario.link=informacion['link']
             usuario.set_password(informacion['password1'])
             usuario.save()
             return render(request,'appmodel/inicio.html', {"mensaje":"su perfil a sido actualizado exitosamente"})
@@ -127,40 +134,4 @@ def editar_perfil(request):
         form=UserEditform(instance=usuario)
     return render (request,'appmodel/editar_perfil.html', {'form':form,'mensaje':'Edita tu perfil'})
 
-#------------------------Mensajes----------------------------------------------------------------
-
-def chats(request):
-        return render(request, 'appmodel/chats.html',
-                      {'users': User.objects.exclude(username=request.user.username)})
-
-def chat_detalle(request, sender=None, receiver=None):
-    if request.method == 'GET':
-        messages = Mensaje.objects.filter(sender_id=sender, receiver_id=receiver, is_read=False)
-        for message in messages:
-            message.is_read=True
-            message.save()
-        form=MensajeFormulario()
-        return render (request, 'appmodel/chat_detalle.html', {'users': User.objects.exclude(username=request.user.username),
-        'form':form,
-        'sender':sender,
-        'receiver':receiver,
-        'messages': Mensaje.objects.filter(sender_id=sender, receiver_id=receiver) | 
-        Mensaje.objects.filter(sender_id=receiver, receiver_id=sender)})
-
-    else:
-        form_vacio=MensajeFormulario()
-        data=MensajeFormulario(request.POST)
-        if data.is_valid():
-            data_clean=data.cleaned_data.get('message')
-            message=Mensaje(sender_id=sender, receiver_id=receiver, message=data_clean)
-            message.save()
-            return render(request, 'appmodel/chat_detalle.html', {'users': User.objects.exclude(username=request.user.username),
-            'form':form_vacio,
-            'form_lleno':data,
-            'sender':sender,
-            'receiver':receiver,
-            'messages': Mensaje.objects.filter(sender_id=sender, receiver_id=receiver) |
-             Mensaje.objects.filter(sender_id=receiver, receiver_id=sender)})
-
-            
 

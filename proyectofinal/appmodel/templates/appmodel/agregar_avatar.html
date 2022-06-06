@@ -21,6 +21,9 @@
 
 <br>
 
+<button class="btn btn-danger" href="{%url 'borrar_avatar'%}">Eliminar avatar</button>
+<a class="btn btn-primary" href="{% url 'perfil' %}">Regresar</a>
+
 
 {% endblock %}
 
@@ -29,4 +32,5 @@
 <li class="nav-item"><a class="nav-link" href="{% url 'reseñas' %}">Reseñas</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'chats' %}">Chat</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'about_me' %}">Acerca de mi</a></li>
 {% endblock %}

@@ -4,9 +4,8 @@
 
 {% block titulo %}
 <h1 class="mb-5">PERFIL</h1>
+{{ mensaje }}
 <img height="150px" src="{{ url }}">
-
-<h2 class="mb-5">{{ request.user }}</h2>
 {% endblock %}
 
 {% block navegador %}
@@ -14,10 +13,18 @@
 <li class="nav-item"><a class="nav-link" href="{% url 'reseñas' %}">Reseñas</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'chats' %}">Chat</a></li>
 <li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'about_me' %}">Acerca de mi</a></li>
 {% endblock %}
 
 {% block lista %}
-<a class="nav-link "href="{% url 'agregar_avatar' %}">Cambia tu avatar</a>
+
+<h2 class="mb-5">Usuario: {{ usuario.username }}</h2>
+<h2 class="mb-5">Email: {{ usuario.email }}</h2>
+<h2 class="mb-5">Red social: {{ usuario.link }}</h2>
+
+
+
+<a class="nav-link "href="{% url 'agregar_avatar' %}">Edita tu avatar</a>
 <a class="nav-link" href="{% url 'editar_perfil' %}">Edita tu informacion</a>
 <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesion</a>
 

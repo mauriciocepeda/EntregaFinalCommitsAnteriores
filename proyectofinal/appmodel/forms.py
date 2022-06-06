@@ -1,6 +1,3 @@
-from dataclasses import fields
-from pyexpat import model
-from xml.dom.expatbuilder import FilterVisibilityController
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -9,7 +6,6 @@ from django.utils import timezone
 from django.views.generic import CreateView
 
 from appmodel.models import Reseña
-from appmodel.models import Mensaje
 
 
 class UserRegisterForm(UserCreationForm):
@@ -33,11 +29,12 @@ class UserLoginForm(AuthenticationForm):         #probar su uso, quizas se imple
 
 class UserEditform(UserCreationForm):
     email=forms.EmailField(label="Email")
+    link=forms.URLField(label="Red social(Opcional)",required=False)
     password1=forms.CharField(label="Nueva contraseña", widget=forms.PasswordInput)
     password2=forms.CharField(label="ingrese nuevamente", widget=forms.PasswordInput)
     class Meta:
         model=User
-        fields=['username','email', 'password1','password2']
+        fields=['username','email', 'link','password1','password2']
         help_texts={k:"" for k in fields}
 
 
@@ -55,9 +52,3 @@ class ReseñaFormulario(CreateView):
         fields=['fecha','titulo','cuerpo','tapa']
         help_texts={k:"" for k in fields}
 
-class MensajeFormulario(forms.Form):
-    message=forms.CharField(label="")
-
-    class Meta:
-        model=Mensaje
-        fields=['sender','receiver','message','is_read']

@@ -1,0 +1,42 @@
+{% extends 'appmodel/padre.html' %}
+
+{% load static %}
+
+{% block titulo %}
+<h1 class="mb-5">Acerca de mi</h1>
+{% endblock %}
+
+{% block navegador %}
+<li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'reseñas' %}">Reseñas</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'chats' %}">Chat</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'perfil' %}">Mi perfil</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'about_me' %}">Acerca de mi</a></li>
+{% endblock %}
+
+{% block lista %}
+<div class="a">
+    <h1>Yo</h1>
+<h5>Mi nombre es Mauricio Cepeda, tengo 23 años y este es mi primer curso de programacion. <br>
+    Arranque a interesarme en las It hace un año aproximadamente, y de a poco viendo cursos gratuitos en internet empece 
+    a aprender a programar. <br> Me resulta increible y muy loco poder haber hecho esto, hace unos meses veia muy lejano el poder desarrollar un sitio web, y hoy estoy aca, escribiendo esto 
+    ya habiendo aprendido a programar en Python, y utilizando Django, HTML, CSS, Bootstrap, y Django Rest Framework(esto ultimo me lo recomendo el copilot, y lo agregue porque quedaba lindo jaja). <br>
+    Personalmente el curso me encanto. Con mi trabajo, hacer este curso en simultaneo muchos dias se me complico, pero las ganas y la pasion que desperto esto en mi, me daban ganas de sentarme en la computadora pese a estar cansado.
+    <br>
+    Estoy seguro que esto es simplemente el comienzo, y tambien soy conciente de que la programacion es dificil y mi web no es la mejor, pero me gusto y disfrute hacerla, y el dia de mañana, quizas cuando ya haya aprendido lo suficente como para trabajar de esto y 
+    encuentre esta web, mi primera web, estoy seguro de que voy a estar orgulloso de haberme animado a intertarlo. <br>
+</h5>
+</div>
+<h1>Acerca de la web</h1>
+<h5>Uno de mis hobbies es la musica, me encanta escuchar y hacer musica.
+    <br>
+    Para este proyecto se me ocurrio un blog de reseñas, donde un administrador (yo)
+ evalua y da su punto de vista acerca de algunos albumes.
+<br>
+Es una idea sencilla, pero efectiva.
+<br>
+La pagina cuenta con 2 aplicaciones, una general y una de mensajeria. <br>
+en la aplicacion general podemos leer, crear, editar y hasta borrar reseñas, con imagen, titulo y cuerpo. ademas de poder hacer lo mismo con los perfiles y usuarios registrados. <br>
+Por su parte, en la app de mensajeria, podemos interactuar con los demas usuarios logeados en la web.
+</h5>
+{% endblock %}
